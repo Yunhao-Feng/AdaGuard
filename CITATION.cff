@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use AdaGuard, please cite the paper listed below."
+title: AdaGuard
+type: software
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/Yunhao-Feng/AdaGuard"
+url: "https://github.com/Yunhao-Feng/AdaGuard"
+authors:
+  - name: "AdaGuard contributors"
+preferred-citation:
+  type: article
+  title: "AdaGuard: An Adaptive Guard Model with User-defined Policies"
+  authors:
+    - family-names: Feng
+      given-names: Yunhao
+    - family-names: Ding
+      given-names: Yifan
+    - family-names: Xie
+      given-names: Yuxiang
+    - family-names: Li
+      given-names: Zheng
+    - family-names: Lao
+      given-names: Mingrui
+    - family-names: Wang
+      given-names: Zeyuan
+    - family-names: Guo
+      given-names: Yanming
+  year: 2026
+  journal: arXiv
+  doi: "10.48550/arXiv.2609.34241"
+  url: "https://arxiv.org/abs/2609.34241"

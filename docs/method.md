@@ -1,4 +1,14 @@
-# Training computation
+# How AdaGuard is trained
+
+[Home](../README.md) · [中文首页](../README.zh-CN.md) · [Training commands](training.md)
+
+## The short version
+
+1. **Learn from examples.** Supervised fine-tuning teaches the model to explain a judgment and list the violated rules.
+2. **Compare several answers.** SafePO samples eight answers for the same input and rewards accurate rule predictions.
+3. **Balance explanation and verdict.** The two parts receive separate token-weight budgets, so a long explanation does not overwhelm the final rule labels.
+
+The sections below describe the computation implemented in this repository. `P` means the predicted sequence of rule IDs; `G` means the reference sequence. An “advantage” measures how an answer's reward compares with the other answers for that input. A “prefix value” estimates final reward from the text generated so far.
 
 ## Supervised initialization
 
@@ -26,3 +36,9 @@ Adjacent pre-update value differences modulate token weights by `1 + (kappa/2) *
 Kappa starts at zero. Pre-update value MSE is compared with a leave-one-out reward predictor using exponential moving averages (decay 0.95). The resulting clipped coefficient affects the next batch only. The leave-one-out predictor is a modulation-quality reference, not the actor advantage baseline.
 
 The value loss uses final reward targets and value clipping at 0.2. The actor uses a clipped surrogate (0.1) plus fixed-region k3 KL to the frozen supervised reference (coefficient 0.005). The value-derived weights affect only the task term. We compute all old log probabilities, values, advantages and weights before updating either model, then perform one value update and one actor update.
+
+## Implementation limits
+
+These are full-parameter, single-device reference trainers. They do not include distributed orchestration, automatic checkpoint selection or automatic resume. SafePO keeps the actor, reference and value backbone on the same device. The four bundled examples verify the format, not the paper's benchmark results.
+
+See the [paper](https://arxiv.org/abs/2609.34241) for the research description and the [validation guide](validation.md) for test coverage. The reward checks rule labels and output structure; it does not independently verify the explanation's factual accuracy.
